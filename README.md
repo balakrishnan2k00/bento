@@ -1,10 +1,20 @@
 # Bento
 
-A personal start page: bookmarks, today’s schedule, headlines, a daily quote, search, and directions.
+Personal start page for Balakrishnan: bookmarks, a daily quote, search, weather, and directions from Hyderabad.
 
-Live site: https://balakrishnan2k00.github.io/bento/
+**Live site:** https://balakrishnan2k00.github.io/bento/
 
-## Run
+**Repo:** https://github.com/balakrishnan2k00/bento
+
+## What you need
+
+- [Node.js](https://nodejs.org/) 20 or newer
+- Git
+- [GitHub CLI](https://cli.github.com/) (`gh`) if you want to log in from the terminal
+
+## Run locally
+
+From `e:\Projects\dashboard`:
 
 ```bash
 npm install
@@ -13,34 +23,76 @@ npm run dev
 
 Open http://localhost:5173.
 
-Weather is loaded for Lawrenceville, GA from [Open-Meteo](https://open-meteo.com/). If that request fails, the page keeps 79°F.
+Press `/` to focus search. Choose **Google** or **Bing**, then Enter. Directions opens Google Maps from Hyderabad, 500018. Weather comes from [Open-Meteo](https://open-meteo.com/) (falls back to 32°C). The quote of the day comes from [DummyJSON](https://dummyjson.com/) and is cached in this browser until tomorrow. Bookmark icons are each site’s favicon.
 
-Press `/` to focus search. Choose Google or Wiki, then press Enter. Directions opens Google Maps from the saved address.
+## Edit the page
 
-## Connect a calendar
+Most personal details live in `src/data.ts`:
 
-The calendar card can show today’s events from **Google Calendar**. Apple Calendar has no browser sign-in API, so use an iCal link or subscribe that calendar in Google, then connect Google.
+- `profile.name` — greeting name
+- `profile.address` / `addressDisplay` — Directions origin
+- `profile.latitude` / `longitude` — weather
+- `personal`, `favorites`, `entertainment`, `work` — bookmark lists (`label`, `href`)
 
-### Google Calendar (recommended)
+India flag, logo, and search engines are in `src/icons.tsx` and `src/dashboard.tsx`. Favicon is `public/favicon.svg`.
 
-1. Open [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a project, enable **Google Calendar API**.
-3. Create an **OAuth client ID** of type **Web application**.
-4. Add authorized JavaScript origins:
-   - `http://localhost:5173`
-   - `https://balakrishnan2k00.github.io`
-5. On the dashboard, open **Connect calendar**, paste the client ID, then **Connect Google Calendar**.
+After local edits, refresh http://localhost:5173.
 
-The site only asks for read-only calendar access. The client ID is stored in this browser; Google’s access token stays in the tab session.
+## Save to GitHub and publish
 
-### Apple Calendar / iCal
+The source lives on the `main` branch. The live site is the `gh-pages` branch.
 
-In Apple Calendar, publish or share the calendar and copy the iCal URL (`webcal://` is fine). Paste it under **Connect calendar**. If the browser blocks the link (common), add that calendar in Google Calendar with **From URL**, then connect Google.
+### 1. Log in (once)
 
-## Deploy on GitHub Pages
+```bash
+gh auth login --hostname github.com --git-protocol https --web
+```
 
-Publishes the production build to the `gh-pages` branch:
+Complete the browser prompt. You only need the extra `workflow` permission if you add GitHub Actions later. This project publishes with `gh-pages`, so `repo` access is enough.
+
+### 2. Commit your changes
+
+```bash
+git status
+git add -A
+git commit -m "Describe why you changed the start page."
+git push origin main
+```
+
+Do not commit `.env` files or secrets. `node_modules` and `dist` are already ignored.
+
+### 3. Deploy the live site
 
 ```bash
 npm run deploy
 ```
+
+That builds the React app and pushes `dist` to `gh-pages`. After a minute, open https://balakrishnan2k00.github.io/bento/.
+
+If Pages is not on yet: GitHub repo → **Settings → Pages → Source** → branch **`gh-pages`** / folder **`/`** → Save.
+
+### Full sequence after an edit
+
+```bash
+cd e:\Projects\dashboard
+npm run dev
+```
+
+Check the page in the browser, then:
+
+```bash
+git add -A
+git commit -m "Your message"
+git push origin main
+npm run deploy
+```
+
+## Other scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Local app at http://localhost:5173 |
+| `npm run build` | Production build into `dist/` |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Lint |
+| `npm run deploy` | Build and publish to GitHub Pages |

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 import type { IconName } from './data'
 
@@ -22,12 +23,6 @@ const letters: Record<IconName, LetterMark> = {
   youtube: { bg: '#FF0033', fg: '#fff', text: '▶', size: 10 },
   amazon: { bg: '#232F3E', fg: '#FF9900', text: 'a' },
   espn: { bg: '#CC0000', fg: '#fff', text: 'E' },
-  bbc: { bg: '#111111', fg: '#fff', text: 'B' },
-  imdb: { bg: '#F5C518', fg: '#111', text: 'IMDb', size: 6.5 },
-  nyt: { bg: '#111111', fg: '#fff', text: 'T', size: 14 },
-  wapo: { bg: '#111111', fg: '#fff', text: 'W' },
-  latimes: { bg: '#111111', fg: '#fff', text: 'LA', size: 8 },
-  techcrunch: { bg: '#00A562', fg: '#fff', text: 'TC', size: 8 },
   prime: { bg: '#00A8E1', fg: '#fff', text: '▶', size: 10 },
   netflix: { bg: '#E50914', fg: '#fff', text: 'N' },
   hulu: { bg: '#1CE783', fg: '#0B1C12', text: 'h' },
@@ -77,65 +72,30 @@ function LetterTile({ bg, fg, text, size = 12 }: LetterMark) {
   )
 }
 
-const specials: Partial<Record<IconName, ReactNode>> = {
-  gmail: (
-    <Tile bg="#ffffff">
-      <path d="M4 8.2 12 13.2 20 8.2V17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8.2z" fill="#F1F3F4" />
-      <path d="M4 7.4 12 12.6 20 7.4 18.2 6H5.8L4 7.4z" fill="#EA4335" />
-      <path d="M4 8.2V17a1 1 0 0 0 1 1h1.2V10.2L4 8.2z" fill="#34A853" />
-      <path d="M20 8.2V17a1 1 0 0 1-1 1h-1.2V10.2L20 8.2z" fill="#4285F4" />
-      <path d="M4 7.4 6.2 6 4 8.2V7.4z" fill="#FBBC04" />
-      <path d="M20 7.4 17.8 6 20 8.2V7.4z" fill="#FBBC04" />
-    </Tile>
-  ),
-  googlePhotos: (
-    <Tile bg="#ffffff">
-      <path d="M12 4a4 4 0 0 1 4 4h-4V4z" fill="#FBBC04" />
-      <path d="M20 12a4 4 0 0 1-4 4v-4h4z" fill="#EA4335" />
-      <path d="M12 20a4 4 0 0 1-4-4h4v4z" fill="#34A853" />
-      <path d="M4 12a4 4 0 0 1 4-4v4H4z" fill="#4285F4" />
-    </Tile>
-  ),
-  drive: (
-    <Tile bg="#ffffff">
-      <path d="M9.2 5h5.6l4.2 7.2H13.4L9.2 5z" fill="#FBBC04" />
-      <path d="M8.2 6.2 4 13.6l2.2 3.8 4.2-7.2L8.2 6.2z" fill="#188038" />
-      <path d="M6.2 17.4h11.2L15.2 14H8.4l-2.2 3.4z" fill="#4285F4" />
-    </Tile>
-  ),
-  youtube: (
-    <Tile bg="#FF0033">
-      <path d="M10 8.2v7.6l6.4-3.8L10 8.2z" fill="#fff" />
-    </Tile>
-  ),
-  spotify: (
-    <Tile bg="#1DB954">
-      <path d="M6.2 9.6c4.2-1.3 8.6-.9 12.2.8" stroke="#fff" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-      <path d="M7.1 12.6c3.3-1 6.8-.7 9.8.6" stroke="#fff" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-      <path d="M8 15.5c2.5-.7 5.1-.5 7.4.5" stroke="#fff" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-    </Tile>
-  ),
-  figma: (
-    <Tile bg="#ffffff">
-      <circle cx="9" cy="7" r="2.3" fill="#F24E1E" />
-      <circle cx="15" cy="7" r="2.3" fill="#FF7262" />
-      <circle cx="9" cy="12" r="2.3" fill="#A259FF" />
-      <circle cx="15" cy="12" r="2.3" fill="#1ABCFE" />
-      <circle cx="12" cy="17" r="2.3" fill="#0ACF83" />
-    </Tile>
-  ),
-  x: (
-    <Tile bg="#111111">
-      <path d="M7 7.2 16.8 16.8M16.8 7.2 7 16.8" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-    </Tile>
-  ),
+function faviconSrc(href: string) {
+  return `https://www.google.com/s2/favicons?sz=128&domain_url=${encodeURIComponent(href)}`
 }
 
-export function ServiceIcon({ name }: { name: IconName }) {
-  return <span className="service-icon">{specials[name] ?? <LetterTile {...letters[name]} />}</span>
+export function ServiceIcon({ name, href }: { name: IconName; href: string }) {
+  const [failed, setFailed] = useState(false)
+
+  return (
+    <span className="service-icon">
+      {failed ? (
+        <LetterTile {...letters[name]} />
+      ) : (
+        <img alt="" src={faviconSrc(href)} width={20} height={20} onError={() => setFailed(true)} />
+      )}
+    </span>
+  )
 }
 
 export function Flag() {
+  const spokes = Array.from({ length: 24 }, (_, index) => {
+    const angle = (index * Math.PI) / 12
+    return { x2: 30 + Math.cos(angle) * 4.4, y2: 18 + Math.sin(angle) * 4.4 }
+  })
+
   return (
     <svg className="flag" viewBox="0 0 60 36" aria-hidden="true">
       <defs>
@@ -144,15 +104,22 @@ export function Flag() {
         </clipPath>
       </defs>
       <g clipPath="url(#bento-flag)">
-        <rect width="60" height="36" fill="#012169" />
-        <path d="M0 0 L60 36" stroke="#fff" strokeWidth="10" />
-        <path d="M60 0 L0 36" stroke="#fff" strokeWidth="10" />
-        <path d="M0 0 L60 36" stroke="#C8102E" strokeWidth="6" />
-        <path d="M60 0 L0 36" stroke="#C8102E" strokeWidth="6" />
-        <rect x="25" width="10" height="36" fill="#fff" />
-        <rect y="13" width="60" height="10" fill="#fff" />
-        <rect x="27" width="6" height="36" fill="#C8102E" />
-        <rect y="15" width="60" height="6" fill="#C8102E" />
+        <rect width="60" height="12" fill="#FF9933" />
+        <rect y="12" width="60" height="12" fill="#fff" />
+        <rect y="24" width="60" height="12" fill="#138808" />
+        <circle cx="30" cy="18" r="4.6" fill="none" stroke="#06038D" strokeWidth="1.1" />
+        {spokes.map((spoke, index) => (
+          <line
+            key={index}
+            x1="30"
+            y1="18"
+            x2={spoke.x2}
+            y2={spoke.y2}
+            stroke="#06038D"
+            strokeWidth="0.7"
+          />
+        ))}
+        <circle cx="30" cy="18" r="1" fill="#06038D" />
       </g>
     </svg>
   )
@@ -161,9 +128,11 @@ export function Flag() {
 export function Logo() {
   return (
     <svg className="logo" viewBox="0 0 36 36" aria-hidden="true">
-      <rect x="1" y="1" width="16" height="16" rx="4" fill="#f26b2b" />
-      <rect x="1" y="19" width="16" height="16" rx="4" fill="#3d342c" />
-      <rect x="19" y="19" width="16" height="16" rx="4" fill="#c4a882" />
+      <rect width="36" height="36" rx="10" fill="#101828" />
+      <rect x="5" y="5" width="12" height="12" rx="3.2" fill="#FF9933" />
+      <rect x="19" y="5" width="12" height="12" rx="3.2" fill="#F8FAFC" />
+      <rect x="5" y="19" width="12" height="12" rx="3.2" fill="#138808" />
+      <rect x="19" y="19" width="12" height="12" rx="3.2" fill="#2563EB" />
     </svg>
   )
 }

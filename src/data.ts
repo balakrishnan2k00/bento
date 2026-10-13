@@ -12,12 +12,6 @@ export type IconName =
   | 'youtube'
   | 'amazon'
   | 'espn'
-  | 'bbc'
-  | 'imdb'
-  | 'nyt'
-  | 'wapo'
-  | 'latimes'
-  | 'techcrunch'
   | 'prime'
   | 'netflix'
   | 'hulu'
@@ -35,36 +29,17 @@ export type Bookmark = {
   icon: IconName
 }
 
-export type Story = {
-  title: string
-  age: string
-}
-
-export type ScheduleEvent = {
-  title: string
-  time: string
-}
-
 export const profile = {
-  name: 'Won',
-  address: '2094 Pierce Brennen Ct, Lawrenceville, GA 30043',
-  addressDisplay: ['2094 PIERCE BRENNEN CT, LAWRENCEVILLE, GA', '30043'],
-  latitude: 33.9562,
-  longitude: -83.9879,
+  name: 'Balakrishnan',
+  address: 'Marina Skies Hyderabad, Telangana 500018, India',
+  addressDisplay: ['HYDERABAD, TELANGANA, INDIA', '500018'],
+  latitude: 17.465051,
+  longitude: 78.408110,
 }
 
-export const calendarNote = 'Rest up — tomorrow is a new day.'
-
-export const schedule: ScheduleEvent[] = [
-  { title: 'Ping Madison about key pickup time', time: '10:30 AM' },
-  { title: 'Walk dog at dogpark', time: '3:30 PM' },
-  { title: 'AIGA Poster Show', time: '6:15 PM' },
-]
-
-export const quote = {
+export const fallbackQuote = {
   text: 'The best and most beautiful things in the world cannot be seen or even touched – they must be felt with the heart.',
   author: 'Helen Keller',
-  badge: 'Daily Wisdom',
 }
 
 export const personal: Bookmark[] = [
@@ -86,15 +61,6 @@ export const favorites: Bookmark[] = [
   { label: 'ESPN', href: 'https://www.espn.com', icon: 'espn' },
 ]
 
-export const newsLinks: Bookmark[] = [
-  { label: 'BBC', href: 'https://www.bbc.com/news', icon: 'bbc' },
-  { label: 'IMDb', href: 'https://www.imdb.com', icon: 'imdb' },
-  { label: 'New York Times', href: 'https://www.nytimes.com', icon: 'nyt' },
-  { label: 'Washington Post', href: 'https://www.washingtonpost.com', icon: 'wapo' },
-  { label: 'LA Times', href: 'https://www.latimes.com', icon: 'latimes' },
-  { label: 'TechCrunch', href: 'https://techcrunch.com', icon: 'techcrunch' },
-]
-
 export const entertainment: Bookmark[] = [
   { label: 'Amazon Prime', href: 'https://www.primevideo.com', icon: 'prime' },
   { label: 'Netflix', href: 'https://www.netflix.com', icon: 'netflix' },
@@ -109,43 +75,4 @@ export const work: Bookmark[] = [
   { label: 'Google Analytics', href: 'https://analytics.google.com', icon: 'analytics' },
   { label: 'Notion', href: 'https://www.notion.so', icon: 'notion' },
   { label: 'Figma', href: 'https://www.figma.com', icon: 'figma' },
-]
-
-export const stories: Story[] = [
-  {
-    title: 'Reform receives second £36m donation in two days as crypto investor matches record',
-    age: '4H',
-  },
-  {
-    title: "Burnham and Badenoch review red versus blue politics as Reform land 'gobsmacking' donations",
-    age: '4H',
-  },
-  {
-    title: "Trump says united Ireland would be 'fantastic' during visit to Dublin",
-    age: '3H',
-  },
-  {
-    title: 'Anthropic boss Dario Amodei calls for AI development to slow down',
-    age: '3H',
-  },
-  {
-    title: 'Saudi Arabia shuts key oil pipeline after drone attack launched from Iraq',
-    age: '2H',
-  },
-  {
-    title: 'Oscar-winning film producer Jeremy Thomas dies aged 77',
-    age: '2H',
-  },
-  {
-    title: "I never got to experience my baby's scan, but blind parents like me can now feel them",
-    age: '2H',
-  },
-  {
-    title: 'Hardened activists are changing tactics and mobilising the anti-migrant vote',
-    age: '1H',
-  },
-  {
-    title: "Every museum in the world is stressing: 'Did the Louvre heist embolden thieves?'",
-    age: '1H',
-  },
 ]

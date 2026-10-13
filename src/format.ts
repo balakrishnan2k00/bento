@@ -16,25 +16,3 @@ export function formatClock(date: Date) {
 export function formatPillDate(date: Date) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
-
-export function formatCalendarKicker(date: Date) {
-  const weekday = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()
-  const month = date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()
-  const day = date.getDate()
-  return `${weekday}, ${month} ${day}${ordinal(day)}`
-}
-
-function ordinal(day: number) {
-  const mod100 = day % 100
-  if (mod100 >= 11 && mod100 <= 13) return 'TH'
-  switch (day % 10) {
-    case 1:
-      return 'ST'
-    case 2:
-      return 'ND'
-    case 3:
-      return 'RD'
-    default:
-      return 'TH'
-  }
-}

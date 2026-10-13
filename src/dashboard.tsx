@@ -1,9 +1,7 @@
-import { useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import type { Bookmark } from './data'
-import { calendarNote, profile, quote, stories } from './data'
-import { useCalendar } from './hooks'
-import { formatCalendarKicker, formatClock, formatPillDate, greetingFor } from './format'
+import { profile } from './data'
+import { formatClock, formatPillDate, greetingFor } from './format'
 import {
   ArrowIcon,
   CalendarMiniIcon,
@@ -48,19 +46,9 @@ export function TopBar({ now, temp, code }: { now: Date; temp: number; code: num
           <CalendarMiniIcon />
           {formatPillDate(now)}
         </span>
-        <span className="pill" title="Lawrenceville, GA">
+        <span className="pill" title="Hyderabad, India">
           <WeatherIcon code={code} />
-          {temp}°F
-        </span>
-        <span className="pill user-pill">
-          <span className="avatar" aria-hidden="true">
-            <svg viewBox="0 0 32 32">
-              <circle cx="16" cy="16" r="16" fill="#e4d2c0" />
-              <circle cx="16" cy="13" r="5" fill="#f6ebe2" />
-              <path d="M6.5 27.5c2-5 5.6-7.2 9.5-7.2s7.5 2.2 9.5 7.2" fill="#f6ebe2" />
-            </svg>
-          </span>
-          {profile.name}
+          {temp}°C
         </span>
       </div>
     </div>
@@ -75,9 +63,9 @@ export function SearchBar({
   onSubmit,
 }: {
   query: string
-  engine: 'google' | 'wiki'
+  engine: 'google' | 'bing'
   onQuery: (value: string) => void
-  onEngine: (engine: 'google' | 'wiki') => void
+  onEngine: (engine: 'google' | 'bing') => void
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
 }) {
   return (
@@ -105,10 +93,10 @@ export function SearchBar({
           type="button"
           className="engine"
           role="radio"
-          aria-checked={engine === 'wiki'}
-          onClick={() => onEngine('wiki')}
+          aria-checked={engine === 'bing'}
+          onClick={() => onEngine('bing')}
         >
-          Wiki
+          Bing
         </button>
       </div>
     </form>
@@ -130,7 +118,7 @@ export function LinkCard({
       <nav className="link-list" aria-label={title}>
         {items.map((item) => (
           <ExternalLink key={item.label} className="link-row" href={item.href}>
-            <ServiceIcon name={item.icon} />
+            <ServiceIcon name={item.icon} href={item.href} />
             <span>{item.label}</span>
             <Chevron />
           </ExternalLink>
@@ -140,129 +128,17 @@ export function LinkCard({
   )
 }
 
-export function CalendarCard({ now }: { now: Date }) {
-  const calendar = useCalendar(now)
-  const [setup, setSetup] = useState(false)
-  const connected = calendar.source !== 'demo'
-  const note =
-    calendar.status === 'loading'
-      ? 'Loading today’s events…'
-      : connected && calendar.events.length === 0 && !calendar.error
-        ? 'Nothing on the calendar today.'
-        : calendarNote
-
-  return (
-    <section className="card calendar-card">
-      <h2 className="card-label">Calendar</h2>
-      <p className="cal-kicker">{formatCalendarKicker(now)}</p>
-      <p className="cal-note">{note}</p>
-      <p className="schedule-label">{connected ? 'Today' : "Today's schedule"}</p>
-      <ul className="events">
-        {calendar.events.map((event) => (
-          <li key={`${event.title}-${event.time}`} className="event">
-            <span className="plus" aria-hidden="true">
-              +
-            </span>
-            <span>{event.title}</span>
-            <time>{event.time}</time>
-          </li>
-        ))}
-      </ul>
-      {calendar.error ? <p className="cal-error">{calendar.error}</p> : null}
-      {setup ? (
-        <form
-          className="cal-setup"
-          onSubmit={(event) => {
-            event.preventDefault()
-          }}
-        >
-          <label className="cal-field">
-            Google client ID
-            <input
-              value={calendar.clientId}
-              onChange={(event) => calendar.setClientId(event.target.value)}
-              placeholder="xxxx.apps.googleusercontent.com"
-              autoComplete="off"
-              spellCheck={false}
-            />
-          </label>
-          <button className="cal-action" type="button" onClick={() => void calendar.connectGoogle()}>
-            Connect Google Calendar
-          </button>
-          <label className="cal-field">
-            Apple or Google iCal URL
-            <input
-              value={calendar.icalUrl}
-              onChange={(event) => calendar.setIcalUrl(event.target.value)}
-              placeholder="https:// or webcal://"
-              autoComplete="off"
-              spellCheck={false}
-            />
-          </label>
-          <button className="cal-action" type="button" onClick={() => void calendar.connectIcal()}>
-            Load iCal link
-          </button>
-          <p className="cal-hint">
-            Apple Calendar has no sign-in API for websites. Publish an iCal link, or subscribe that
-            calendar in Google and connect Google instead.
-          </p>
-        </form>
-      ) : null}
-      <div className="cal-actions">
-        <button className="cal-link" type="button" onClick={() => setSetup((open) => !open)}>
-          <CalendarMiniIcon />
-          {setup ? 'Hide connect' : connected ? 'Calendar settings' : 'Connect calendar'}
-        </button>
-        {connected ? (
-          <button className="cal-link" type="button" onClick={calendar.disconnect}>
-            Disconnect
-          </button>
-        ) : (
-          <ExternalLink className="cal-link" href="https://calendar.google.com">
-            Open Google Calendar
-          </ExternalLink>
-        )}
-      </div>
-    </section>
-  )
-}
-
-export function NewsFeed() {
-  return (
-    <section className="card news-feed">
-      <h2 className="card-label">BBC News</h2>
-      <div className="stories">
-        {stories.map((story) => (
-          <ExternalLink
-            key={story.title}
-            className="story"
-            href={`https://www.bbc.com/search?q=${encodeURIComponent(story.title)}`}
-          >
-            <span className="story-title">{story.title}</span>
-            <span className="story-meta">
-              <span className="bbc-mark" aria-hidden="true" />
-              BBC News
-              <span aria-hidden="true">·</span>
-              {story.age}
-            </span>
-          </ExternalLink>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-export function QuoteCard() {
+export function QuoteCard({ text, author }: { text: string; author: string }) {
   return (
     <section className="card quote-card">
       <h2 className="card-label quote-label">
         <SparkleIcon />
         Quote of the day
       </h2>
-      <blockquote className="quote-text">“{quote.text}”</blockquote>
+      <blockquote className="quote-text">“{text}”</blockquote>
       <footer className="quote-footer">
-        <cite>— {quote.author}</cite>
-        <span className="wisdom">{quote.badge}</span>
+        <cite>— {author}</cite>
+        <span className="wisdom">Daily Wisdom</span>
       </footer>
     </section>
   )

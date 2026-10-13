@@ -1,23 +1,22 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { entertainment, favorites, newsLinks, personal, profile, work } from './data'
+import { entertainment, favorites, personal, profile, work } from './data'
 import {
-  CalendarCard,
   DirectionsCard,
   LinkCard,
-  NewsFeed,
   QuoteCard,
   SearchBar,
   TopBar,
 } from './dashboard'
-import { useNow, useSearchHotkey, useWeather } from './hooks'
+import { useNow, useQuote, useSearchHotkey, useWeather } from './hooks'
 import { Logo } from './icons'
 
-type Engine = 'google' | 'wiki'
+type Engine = 'google' | 'bing'
 
 export default function App() {
   const now = useNow()
   const weather = useWeather()
+  const quote = useQuote(now)
   const [engine, setEngine] = useState<Engine>('google')
   const [query, setQuery] = useState('')
   const [destination, setDestination] = useState('')
@@ -30,7 +29,7 @@ export default function App() {
     const url =
       engine === 'google'
         ? `https://www.google.com/search?q=${encodeURIComponent(trimmed)}`
-        : `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(trimmed)}`
+        : `https://www.bing.com/search?q=${encodeURIComponent(trimmed)}`
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 
@@ -71,14 +70,11 @@ export default function App() {
             onSubmit={onSearch}
           />
           <section className="bento" aria-label="Dashboard">
-            <CalendarCard now={now} />
             <LinkCard className="personal" title="Personal" items={personal} />
             <LinkCard className="favorites" title="Favorites" items={favorites} />
-            <LinkCard className="news-links" title="News" items={newsLinks} />
-            <NewsFeed />
-            <QuoteCard />
+            <LinkCard className="entertainment" title="Entertainment" items={entertainment} />
+            <QuoteCard text={quote.text} author={quote.author} />
             <div className="stack">
-              <LinkCard title="Entertainment" items={entertainment} />
               <DirectionsCard
                 destination={destination}
                 onDestination={setDestination}
