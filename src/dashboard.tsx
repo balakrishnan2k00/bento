@@ -131,11 +131,16 @@ export function LinkCard({
 export function QuoteCard({ text, author }: { text: string; author: string }) {
   return (
     <section className="card quote-card">
-      <h2 className="card-label quote-label">
-        <SparkleIcon />
-        Quote of the day
-      </h2>
-      <blockquote className="quote-text">“{text}”</blockquote>
+      <span className="quote-mark" aria-hidden="true">
+        “
+      </span>
+      <div className="quote-copy">
+        <h2 className="card-label quote-label">
+          <SparkleIcon />
+          Quote of the day
+        </h2>
+        <blockquote className="quote-text">{text}</blockquote>
+      </div>
       <footer className="quote-footer">
         <cite>— {author}</cite>
         <span className="wisdom">Daily Wisdom</span>

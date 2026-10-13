@@ -125,9 +125,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .page {
-  width: min(1180px, calc(100% - 72px));
+  width: min(1240px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 34px 0 56px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 0 24px;
   position: relative;
   z-index: 1;
 }
@@ -149,6 +152,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 .shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   background: var(--shell);
   border: 1px solid rgba(255, 255, 255, 0.92);
   border-radius: 28px;
@@ -156,7 +162,7 @@ a { color: inherit; text-decoration: none; }
     0 30px 70px rgba(90, 112, 145, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(18px) saturate(1.15);
-  padding: 16px 16px 14px;
+  padding: 14px 16px 14px;
 }
 
 .shell-head {
@@ -277,22 +283,19 @@ a { color: inherit; text-decoration: none; }
 
 .bento {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: start;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 12px;
+  flex: 1;
 }
 
 .personal { grid-column: 1; grid-row: 1; }
 .favorites { grid-column: 2; grid-row: 1; }
 .entertainment { grid-column: 3; grid-row: 1; }
-.quote-card { grid-column: 1 / span 2; grid-row: 2; }
-.stack {
-  grid-column: 3;
-  grid-row: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+.directions-card { grid-column: 1; grid-row: 2; }
+.work { grid-column: 2 / span 2; grid-row: 2; }
 
 .card {
   background: var(--card);
@@ -366,43 +369,63 @@ a { color: inherit; text-decoration: none; }
 .link-row:hover .chevron { color: #9aa1ab; }
 
 .quote-card {
-  min-height: 320px;
-  display: flex;
-  flex-direction: column;
-  padding: 16px 18px 14px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 12px;
+  min-height: 0;
+  padding: 12px 18px 12px 8px;
   background:
-    radial-gradient(140px 90px at 50% 0%, rgba(255, 214, 140, 0.55), transparent 72%),
-    linear-gradient(180deg, #fff8ef 0%, #f6f3ff 62%, #eef2fb 100%);
+    radial-gradient(180px 80px at 12% 0%, rgba(255, 214, 140, 0.55), transparent 70%),
+    linear-gradient(90deg, #fff8ef 0%, #f6f3ff 55%, #eef2fb 100%);
   border-color: #f3ecdf;
 }
+
+.quote-mark {
+  font-family: var(--serif);
+  font-size: 72px;
+  line-height: 0.7;
+  color: rgba(232, 176, 90, 0.35);
+  padding: 10px 4px 0 10px;
+}
+
+.quote-copy { min-width: 0; }
 
 .quote-label {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin: 0;
   padding: 0;
 }
 
 .sparkle { width: 14px; height: 14px; }
 
 .quote-text {
-  margin: 12px 0 0;
+  margin: 4px 0 0;
   font-family: var(--serif);
-  font-size: clamp(19px, 1.5vw, 26px);
+  font-size: clamp(15px, 1.35vw, 20px);
   font-weight: 400;
-  line-height: 1.32;
+  line-height: 1.35;
   letter-spacing: -0.02em;
   text-wrap: pretty;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .quote-footer {
-  margin-top: auto;
-  padding-top: 22px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 0 8px;
 }
 
 .quote-footer cite {
@@ -420,6 +443,18 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   color: #7b828c;
   white-space: nowrap;
+}
+
+.work .link-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.directions-card form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .address {
@@ -446,7 +481,7 @@ a { color: inherit; text-decoration: none; }
 .where:focus { border-color: #d5dbe3; background: #fff; }
 
 .go {
-  margin: 12px auto 2px;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -454,9 +489,10 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px;
   background: #1c1d20;
   color: #fff;
-  padding: 8px 18px 8px 14px;
+  padding: 10px 16px 10px 12px;
   font-size: 14px;
   font-weight: 600;
+  flex: none;
 }
 
 .go:hover { background: #000; }
@@ -515,23 +551,49 @@ a { color: inherit; text-decoration: none; }
   50% { transform: rotate(1.8deg); }
 }
 
+@media (max-width: 1400px) {
+  .plant { width: 150px; left: -36px; opacity: 0.55; }
+  .pedestal { display: none; }
+}
+
 @media (max-width: 1120px) {
   .page { width: min(1180px, calc(100% - 32px)); }
-  .bento { grid-template-columns: 1fr 1fr; }
-  .personal, .favorites, .entertainment, .quote-card, .stack {
+  .bento { grid-template-columns: 1fr 1fr; grid-template-rows: none; }
+  .personal, .favorites, .entertainment, .directions-card, .work {
     grid-column: auto;
     grid-row: auto;
   }
-  .quote-card { grid-column: 1 / -1; }
+  .work { grid-column: 1 / -1; }
+  .work .link-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .quote-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .quote-footer {
+    grid-column: 2;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
   .plant, .pedestal { opacity: 0.35; }
 }
 
 @media (max-width: 720px) {
   .bento { grid-template-columns: 1fr; }
-  .quote-card { grid-column: auto; }
+  .work { grid-column: auto; }
+  .work .link-list { grid-template-columns: 1fr; }
+  .quote-card { grid-template-columns: 1fr; padding: 14px; }
+  .quote-mark { display: none; }
+  .quote-footer { grid-column: auto; }
+  .directions-card form { flex-direction: column; align-items: stretch; }
+  .go { justify-content: center; }
   .shell-head { flex-direction: column; align-items: flex-start; }
   .pills { justify-content: flex-start; }
   .plant, .pedestal { display: none; }
   .wordmark { font-size: 28px; }
-  .quote-text { font-size: 22px; }
+}
+
+@media (max-height: 860px) {
+  .page { padding: 14px 0 16px; }
+  .brand { margin-bottom: 12px; }
+  .wordmark { font-size: 28px; }
+  .quote-mark { font-size: 56px; }
 }

@@ -69,19 +69,17 @@ export default function App() {
             onEngine={setEngine}
             onSubmit={onSearch}
           />
+          <QuoteCard text={quote.text} author={quote.author} />
           <section className="bento" aria-label="Dashboard">
             <LinkCard className="personal" title="Personal" items={personal} />
             <LinkCard className="favorites" title="Favorites" items={favorites} />
             <LinkCard className="entertainment" title="Entertainment" items={entertainment} />
-            <QuoteCard text={quote.text} author={quote.author} />
-            <div className="stack">
-              <DirectionsCard
-                destination={destination}
-                onDestination={setDestination}
-                onSubmit={onDirections}
-              />
-              <LinkCard title="Work" items={work} />
-            </div>
+            <DirectionsCard
+              destination={destination}
+              onDestination={setDestination}
+              onSubmit={onDirections}
+            />
+            <LinkCard className="work" title="Work" items={work} />
           </section>
         </main>
       </div>
