@@ -2,6 +2,8 @@
 
 A personal start page: bookmarks, today’s schedule, headlines, a daily quote, search, and directions.
 
+Live site: https://balakrishnan2k00.github.io/bento/
+
 ## Run
 
 ```bash
@@ -17,4 +19,8 @@ Press `/` to focus search. Choose Google or Wiki, then press Enter. Directions o
 
 ## Deploy on GitHub Pages
 
-Push `main` to GitHub, then set **Settings → Pages → Source** to **GitHub Actions**. Each push to `main` builds the React app and publishes `dist`.
+Publishes the production build to the `gh-pages` branch:
+
+```bash
+npm run deploy
+```
