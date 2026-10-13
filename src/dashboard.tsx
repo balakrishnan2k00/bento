@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import type { Bookmark } from './data'
-import { calendarNote, profile, quote, schedule, stories } from './data'
+import { calendarNote, profile, quote, stories } from './data'
+import { useCalendar } from './hooks'
 import { formatCalendarKicker, formatClock, formatPillDate, greetingFor } from './format'
 import {
   ArrowIcon,
@@ -139,15 +141,25 @@ export function LinkCard({
 }
 
 export function CalendarCard({ now }: { now: Date }) {
+  const calendar = useCalendar(now)
+  const [setup, setSetup] = useState(false)
+  const connected = calendar.source !== 'demo'
+  const note =
+    calendar.status === 'loading'
+      ? 'Loading today’s events…'
+      : connected && calendar.events.length === 0 && !calendar.error
+        ? 'Nothing on the calendar today.'
+        : calendarNote
+
   return (
     <section className="card calendar-card">
       <h2 className="card-label">Calendar</h2>
       <p className="cal-kicker">{formatCalendarKicker(now)}</p>
-      <p className="cal-note">{calendarNote}</p>
-      <p className="schedule-label">Today's schedule</p>
+      <p className="cal-note">{note}</p>
+      <p className="schedule-label">{connected ? 'Today' : "Today's schedule"}</p>
       <ul className="events">
-        {schedule.map((event) => (
-          <li key={event.title} className="event">
+        {calendar.events.map((event) => (
+          <li key={`${event.title}-${event.time}`} className="event">
             <span className="plus" aria-hidden="true">
               +
             </span>
@@ -156,10 +168,61 @@ export function CalendarCard({ now }: { now: Date }) {
           </li>
         ))}
       </ul>
-      <ExternalLink className="cal-link" href="https://calendar.google.com">
-        <CalendarMiniIcon />
-        Open Google Calendar
-      </ExternalLink>
+      {calendar.error ? <p className="cal-error">{calendar.error}</p> : null}
+      {setup ? (
+        <form
+          className="cal-setup"
+          onSubmit={(event) => {
+            event.preventDefault()
+          }}
+        >
+          <label className="cal-field">
+            Google client ID
+            <input
+              value={calendar.clientId}
+              onChange={(event) => calendar.setClientId(event.target.value)}
+              placeholder="xxxx.apps.googleusercontent.com"
+              autoComplete="off"
+              spellCheck={false}
+            />
+          </label>
+          <button className="cal-action" type="button" onClick={() => void calendar.connectGoogle()}>
+            Connect Google Calendar
+          </button>
+          <label className="cal-field">
+            Apple or Google iCal URL
+            <input
+              value={calendar.icalUrl}
+              onChange={(event) => calendar.setIcalUrl(event.target.value)}
+              placeholder="https:// or webcal://"
+              autoComplete="off"
+              spellCheck={false}
+            />
+          </label>
+          <button className="cal-action" type="button" onClick={() => void calendar.connectIcal()}>
+            Load iCal link
+          </button>
+          <p className="cal-hint">
+            Apple Calendar has no sign-in API for websites. Publish an iCal link, or subscribe that
+            calendar in Google and connect Google instead.
+          </p>
+        </form>
+      ) : null}
+      <div className="cal-actions">
+        <button className="cal-link" type="button" onClick={() => setSetup((open) => !open)}>
+          <CalendarMiniIcon />
+          {setup ? 'Hide connect' : connected ? 'Calendar settings' : 'Connect calendar'}
+        </button>
+        {connected ? (
+          <button className="cal-link" type="button" onClick={calendar.disconnect}>
+            Disconnect
+          </button>
+        ) : (
+          <ExternalLink className="cal-link" href="https://calendar.google.com">
+            Open Google Calendar
+          </ExternalLink>
+        )}
+      </div>
     </section>
   )
 }

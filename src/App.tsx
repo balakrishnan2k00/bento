@@ -46,8 +46,14 @@ export default function App() {
 
   return (
     <div className="scene">
-      <div className="glow glow-a" />
-      <div className="glow glow-b" />
+      <div className="backdrop" aria-hidden="true">
+        <div className="orb orb-sun" />
+        <div className="orb orb-peach" />
+        <div className="orb orb-mint" />
+        <div className="orb orb-sky" />
+        <div className="orb orb-foam" />
+        <div className="haze" />
+      </div>
       <Plant />
       <div className="pedestal" />
       <div className="page">
