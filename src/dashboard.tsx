@@ -8,6 +8,7 @@ import {
   Chevron,
   ClockIcon,
   Flag,
+  ProfileAvatarLink,
   SearchIcon,
   ServiceIcon,
   SparkleIcon,
@@ -50,6 +51,7 @@ export function TopBar({
       <h1 className="greeting">
         <Flag />
         {greetingFor(now)}, {profile.name}
+        <ProfileAvatarLink href={profile.portfolioUrl} />
       </h1>
       <div className="pills">
         <span className="pill pill-theme" title="Appearance">

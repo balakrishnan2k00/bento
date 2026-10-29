@@ -30,6 +30,7 @@ Press `/` to focus search. Choose **Google** or **Bing**, then Enter. Directions
 Most personal details live in `src/data.ts`:
 
 - `profile.name` — greeting name
+- `profile.portfolioUrl` — profile icon link in the greeting
 - `profile.address` / `addressDisplay` — Directions origin
 - `profile.latitude` / `longitude` — weather
 - `personal`, `favorites`, `entertainment`, `work` — bookmark lists (`label`, `href`, `icon`)

@@ -93,6 +93,35 @@ export function ServiceIcon({ name, href }: { name: IconName; href: string }) {
   )
 }
 
+export function ProfileAvatarLink({ href }: { href: string }) {
+  const [failed, setFailed] = useState(false)
+
+  return (
+    <a
+      className="profile-avatar"
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      title="Portfolio"
+      aria-label="Open portfolio"
+    >
+      {failed ? (
+        <span className="profile-avatar-fallback" aria-hidden="true">
+          B
+        </span>
+      ) : (
+        <img
+          alt=""
+          src={faviconSrc(href)}
+          width={28}
+          height={28}
+          onError={() => setFailed(true)}
+        />
+      )}
+    </a>
+  )
+}
+
 export function Flag() {
   const spokes = Array.from({ length: 24 }, (_, index) => {
     const angle = (index * Math.PI) / 12

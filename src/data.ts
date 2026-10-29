@@ -34,6 +34,7 @@ export type Bookmark = {
 
 export const profile = {
   name: 'Balakrishnan',
+  portfolioUrl: 'https://balakrishnan2k00.github.io/Portfolio/',
   address: 'Marina Skies Hyderabad, Telangana 500018, India',
   addressDisplay: ['HYDERABAD, TELANGANA, INDIA', '500018'],
   latitude: 17.465051,
