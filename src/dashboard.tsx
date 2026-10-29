@@ -13,6 +13,8 @@ import {
   SparkleIcon,
   WeatherIcon,
 } from './icons'
+import { ThemeToggle } from './ThemeToggle'
+import type { ThemePreference } from './theme'
 
 function ExternalLink({
   href,
@@ -30,7 +32,19 @@ function ExternalLink({
   )
 }
 
-export function TopBar({ now, temp, code }: { now: Date; temp: number; code: number }) {
+export function TopBar({
+  now,
+  temp,
+  code,
+  themePreference,
+  onThemePreference,
+}: {
+  now: Date
+  temp: number
+  code: number
+  themePreference: ThemePreference
+  onThemePreference: (value: ThemePreference) => void
+}) {
   return (
     <div className="shell-head">
       <h1 className="greeting">
@@ -38,6 +52,9 @@ export function TopBar({ now, temp, code }: { now: Date; temp: number; code: num
         {greetingFor(now)}, {profile.name}
       </h1>
       <div className="pills">
+        <span className="pill pill-theme" title="Appearance">
+          <ThemeToggle value={themePreference} onChange={onThemePreference} />
+        </span>
         <span className="pill">
           <ClockIcon />
           {formatClock(now)}
@@ -106,22 +123,31 @@ export function SearchBar({
 export function LinkCard({
   title,
   items,
+  groups,
   className,
 }: {
   title: string
-  items: Bookmark[]
+  items?: Bookmark[]
+  groups?: { label?: string; items: Bookmark[] }[]
   className?: string
 }) {
+  const sections = groups ?? [{ items: items ?? [] }]
+
   return (
     <section className={`card ${className ?? ''}`}>
       <h2 className="card-label">{title}</h2>
       <nav className="link-list" aria-label={title}>
-        {items.map((item) => (
-          <ExternalLink key={item.label} className="link-row" href={item.href}>
-            <ServiceIcon name={item.icon} href={item.href} />
-            <span>{item.label}</span>
-            <Chevron />
-          </ExternalLink>
+        {sections.map((section, index) => (
+          <div key={section.label ?? `section-${index}`} className="link-section">
+            {section.label ? <h3 className="link-section-label">{section.label}</h3> : null}
+            {section.items.map((item) => (
+              <ExternalLink key={item.label} className="link-row" href={item.href}>
+                <ServiceIcon name={item.icon} href={item.href} />
+                <span>{item.label}</span>
+                <Chevron />
+              </ExternalLink>
+            ))}
+          </div>
         ))}
       </nav>
     </section>
@@ -175,9 +201,9 @@ export function DirectionsCard({
           aria-label="Destination"
           autoComplete="off"
         />
-        <button className="go" type="submit">
+        <button className="go" type="submit" aria-label="Get directions">
           <ArrowIcon />
-          Go
+          <span className="go-text">Go</span>
         </button>
       </form>
     </section>

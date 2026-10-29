@@ -1,27 +1,30 @@
 export type IconName =
   | 'gmail'
-  | 'keep'
+  | 'icloud'
   | 'drive'
-  | 'amazonPhotos'
-  | 'googlePhotos'
-  | 'facebook'
-  | 'yahoo'
-  | 'linkedin'
-  | 'reddit'
-  | 'x'
-  | 'youtube'
-  | 'amazon'
-  | 'espn'
-  | 'prime'
   | 'netflix'
-  | 'hulu'
-  | 'crunchyroll'
-  | 'tiktok'
-  | 'disney'
+  | 'kisskh'
+  | 'prime'
+  | 'hotstar'
+  | 'sunnxt'
+  | 'appletv'
+  | 'youtube'
   | 'spotify'
-  | 'analytics'
+  | 'applemusic'
+  | 'chatgpt'
+  | 'qwen'
+  | 'claude'
+  | 'github'
   | 'notion'
-  | 'figma'
+  | 'naukri'
+  | 'telegram'
+  | 'linkedin'
+  | 'instagram'
+  | 'whatsapp'
+  | 'reddit'
+  | 'amazon'
+  | 'flipkart'
+  | 'piratebay'
 
 export type Bookmark = {
   label: string
@@ -42,37 +45,67 @@ export const fallbackQuote = {
   author: 'Helen Keller',
 }
 
+/** Mail, cloud, AI */
 export const personal: Bookmark[] = [
-  { label: 'Gmail', href: 'https://mail.google.com', icon: 'gmail' },
-  { label: 'Google Keep', href: 'https://keep.google.com', icon: 'keep' },
-  { label: 'Google Drive', href: 'https://drive.google.com', icon: 'drive' },
-  { label: 'Amazon Photos', href: 'https://www.amazon.com/photos', icon: 'amazonPhotos' },
-  { label: 'Google Photos', href: 'https://photos.google.com', icon: 'googlePhotos' },
-  { label: 'FaceBook', href: 'https://www.facebook.com', icon: 'facebook' },
-  { label: 'Yahoo Mail', href: 'https://mail.yahoo.com', icon: 'yahoo' },
+  { label: 'Gmail', href: 'https://mail.google.com/mail/u/0/#inbox', icon: 'gmail' },
+  { label: 'iCloud', href: 'https://www.icloud.com/', icon: 'icloud' },
+  { label: 'OneDrive', href: 'https://onedrive.live.com/', icon: 'drive' },
+  { label: 'ChatGPT', href: 'https://chatgpt.com/', icon: 'chatgpt' },
+  { label: 'Qwen', href: 'https://chat.qwen.ai/', icon: 'qwen' },
+  { label: 'Claude', href: 'https://claude.ai/new', icon: 'claude' },
 ]
 
-export const favorites: Bookmark[] = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com', icon: 'linkedin' },
-  { label: 'Reddit', href: 'https://www.reddit.com', icon: 'reddit' },
-  { label: 'X.com', href: 'https://x.com', icon: 'x' },
-  { label: 'Youtube', href: 'https://www.youtube.com', icon: 'youtube' },
-  { label: 'Amazon', href: 'https://www.amazon.com', icon: 'amazon' },
-  { label: 'ESPN', href: 'https://www.espn.com', icon: 'espn' },
+/** Playlists (top of Favorites column) */
+export const playlists: Bookmark[] = [
+  { label: 'Spotify', href: 'https://open.spotify.com/', icon: 'spotify' },
+  { label: 'Apple Music', href: 'https://music.apple.com/', icon: 'applemusic' },
 ]
 
+const favoritesSocial: Bookmark[] = [
+  { label: 'Telegram', href: 'https://web.telegram.org/k/', icon: 'telegram' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/', icon: 'linkedin' },
+  { label: 'Instagram', href: 'https://www.instagram.com/', icon: 'instagram' },
+  { label: 'WhatsApp', href: 'https://web.whatsapp.com/', icon: 'whatsapp' },
+  { label: 'Reddit', href: 'https://www.reddit.com/', icon: 'reddit' },
+]
+
+/** Playlists + social (Favorites card) */
+export const favorites: Bookmark[] = [...playlists, ...favoritesSocial]
+
+export const favoriteGroups: { label?: string; items: Bookmark[] }[] = [
+  { label: 'Playlists', items: playlists },
+  { items: favoritesSocial },
+]
+
+/** Watch */
 export const entertainment: Bookmark[] = [
-  { label: 'Amazon Prime', href: 'https://www.primevideo.com', icon: 'prime' },
-  { label: 'Netflix', href: 'https://www.netflix.com', icon: 'netflix' },
-  { label: 'Hulu', href: 'https://www.hulu.com', icon: 'hulu' },
-  { label: 'Crunchyroll', href: 'https://www.crunchyroll.com', icon: 'crunchyroll' },
-  { label: 'TikTok', href: 'https://www.tiktok.com', icon: 'tiktok' },
-  { label: 'Disney+', href: 'https://www.disneyplus.com', icon: 'disney' },
-  { label: 'Spotify', href: 'https://open.spotify.com', icon: 'spotify' },
+  { label: 'Netflix', href: 'https://www.netflix.com/browse', icon: 'netflix' },
+  { label: 'KissKH', href: 'https://kisskh.is/', icon: 'kisskh' },
+  {
+    label: 'Prime Video',
+    href: 'https://www.primevideo.com/storefront?ref_=atv_hm_hom_c_9zZ8D2_hom',
+    icon: 'prime',
+  },
+  { label: 'Hotstar', href: 'https://www.hotstar.com/in/home', icon: 'hotstar' },
+  { label: 'Sun NXT', href: 'https://www.sunnxt.com/', icon: 'sunnxt' },
+  { label: 'Apple TV', href: 'https://tv.apple.com/in', icon: 'appletv' },
+  { label: 'YouTube', href: 'https://www.youtube.com/', icon: 'youtube' },
 ]
 
+/** Dev, career, shopping */
 export const work: Bookmark[] = [
-  { label: 'Google Analytics', href: 'https://analytics.google.com', icon: 'analytics' },
-  { label: 'Notion', href: 'https://www.notion.so', icon: 'notion' },
-  { label: 'Figma', href: 'https://www.figma.com', icon: 'figma' },
+  { label: 'GitHub', href: 'https://github.com/', icon: 'github' },
+  {
+    label: 'Notion',
+    href: 'https://app.notion.com/p/balakrishnan2k/none-390a9234892f80e4a1c1f268549432c7',
+    icon: 'notion',
+  },
+  { label: 'Naukri', href: 'https://www.naukri.com/mnjuser/homepage', icon: 'naukri' },
+  { label: 'Amazon', href: 'https://www.amazon.in/ref=nav_logo', icon: 'amazon' },
+  { label: 'Flipkart', href: 'https://www.flipkart.com/', icon: 'flipkart' },
+  {
+    label: 'The Pirate Bay',
+    href: 'https://unblocked.knaben.info/thepiratebay/?__goaway_challenge=resource-load&__goaway_id=fa16e6ede8706d1c213013d6dd87238d',
+    icon: 'piratebay',
+  },
 ]

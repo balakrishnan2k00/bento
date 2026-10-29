@@ -32,7 +32,7 @@ Most personal details live in `src/data.ts`:
 - `profile.name` — greeting name
 - `profile.address` / `addressDisplay` — Directions origin
 - `profile.latitude` / `longitude` — weather
-- `personal`, `favorites`, `entertainment`, `work` — bookmark lists (`label`, `href`)
+- `personal`, `favorites`, `entertainment`, `work` — bookmark lists (`label`, `href`, `icon`)
 
 India flag, logo, and search engines are in `src/icons.tsx` and `src/dashboard.tsx`. Favicon is `public/favicon.svg`.
 

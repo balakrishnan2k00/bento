@@ -1,0 +1,32 @@
+Tamil
+Release date	Movie
+6 November 2026	Mookuthi Amman 2
+6 November 2026	Scene
+4 December 2026	Makkal Kaavalan
+
+Telugu
+Release date	Movie
+12 November 2026	Bhogi
+19 November 2026	ENE Repeat
+20 November 2026	Aakasamlo Oka Tara
+20 November 2026	OM – Chapter 1: Udhiram – The Blood Wood
+27 November 2026	Mysaa
+4 December 2026	Vrushakarma
+24 December 2026	King 100
+
+Hindi
+Release date	Movie
+30 October 2026	Nakhrewaalii
+5 November 2026	Ramayana: Part I
+27 November 2026	Yeh Prem Mol Liya
+24 December 2026	King
+24 December 2026	Shakti Shalini
+
+English
+Release date	Movie
+13 November 2026	I Play Rocky
+27 November 2026	Hexed
+4 December 2026	Violent Night 2
+17 December 2026	Avengers: Doomsday — India
+18 December 2026	Dune: Part Three
+25 December 2026	Jumanji: Open World

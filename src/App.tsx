@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { entertainment, favorites, personal, profile, work } from './data'
+import { entertainment, favoriteGroups, personal, profile, work } from './data'
 import {
   DirectionsCard,
   LinkCard,
@@ -8,13 +8,16 @@ import {
   SearchBar,
   TopBar,
 } from './dashboard'
-import { useNow, useQuote, useSearchHotkey, useWeather } from './hooks'
+import { useNow, useQuote, useSearchHotkey, useThemeControl, useWeather } from './hooks'
 import { Logo } from './icons'
+import { NoticeRail } from './NoticeRail'
+import { MovieTimeline } from './MovieTimeline'
 
 type Engine = 'google' | 'bing'
 
 export default function App() {
   const now = useNow()
+  const { preference: themePreference, setPreference: setThemePreference } = useThemeControl(now)
   const weather = useWeather()
   const quote = useQuote(now)
   const [engine, setEngine] = useState<Engine>('google')
@@ -54,34 +57,43 @@ export default function App() {
         <div className="haze" />
       </div>
       <Plant />
-      <div className="pedestal" />
       <div className="page">
-        <header className="brand">
-          <Logo />
-          <span className="wordmark">Bento</span>
-        </header>
-        <main className="shell">
-          <TopBar now={now} temp={weather.temp} code={weather.code} />
-          <SearchBar
-            query={query}
-            engine={engine}
-            onQuery={setQuery}
-            onEngine={setEngine}
-            onSubmit={onSearch}
+        <NoticeRail />
+        <div className="page-center">
+          <header className="brand">
+            <Logo />
+            <span className="wordmark">Prism</span>
+          </header>
+          <main className="shell">
+            <TopBar
+            now={now}
+            temp={weather.temp}
+            code={weather.code}
+            themePreference={themePreference}
+            onThemePreference={setThemePreference}
           />
-          <QuoteCard text={quote.text} author={quote.author} />
-          <section className="bento" aria-label="Dashboard">
-            <LinkCard className="personal" title="Personal" items={personal} />
-            <LinkCard className="favorites" title="Favorites" items={favorites} />
-            <LinkCard className="entertainment" title="Entertainment" items={entertainment} />
-            <DirectionsCard
-              destination={destination}
-              onDestination={setDestination}
-              onSubmit={onDirections}
+            <SearchBar
+              query={query}
+              engine={engine}
+              onQuery={setQuery}
+              onEngine={setEngine}
+              onSubmit={onSearch}
             />
-            <LinkCard className="work" title="Work" items={work} />
-          </section>
-        </main>
+            <QuoteCard text={quote.text} author={quote.author} />
+            <section className="bento" aria-label="Dashboard">
+              <LinkCard className="personal" title="Personal" items={personal} />
+              <LinkCard className="favorites" title="Favorites" groups={favoriteGroups} />
+              <LinkCard className="entertainment" title="Entertainment" items={entertainment} />
+              <DirectionsCard
+                destination={destination}
+                onDestination={setDestination}
+                onSubmit={onDirections}
+              />
+              <LinkCard className="work" title="Work" items={work} />
+            </section>
+          </main>
+        </div>
+        <MovieTimeline />
       </div>
     </div>
   )

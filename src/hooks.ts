@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
 import { fallbackQuote, profile } from './data'
+import {
+  applyDocumentTheme,
+  readThemePreference,
+  resolveTheme,
+  writeThemePreference,
+  type ThemeMode,
+  type ThemePreference,
+} from './theme'
 
 export function useNow() {
   const [now, setNow] = useState(() => new Date())
@@ -10,6 +18,25 @@ export function useNow() {
   }, [])
 
   return now
+}
+
+export function useThemeControl(now: Date): {
+  preference: ThemePreference
+  setPreference: (next: ThemePreference) => void
+  theme: ThemeMode
+} {
+  const [preference, setPreference] = useState<ThemePreference>(() => readThemePreference())
+  const theme = resolveTheme(preference, now)
+
+  useEffect(() => {
+    applyDocumentTheme(theme)
+  }, [theme])
+
+  useEffect(() => {
+    writeThemePreference(preference)
+  }, [preference])
+
+  return { preference, setPreference, theme }
 }
 
 export function useWeather() {

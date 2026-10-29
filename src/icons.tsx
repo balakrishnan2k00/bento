@@ -11,28 +11,31 @@ type LetterMark = {
 
 const letters: Record<IconName, LetterMark> = {
   gmail: { bg: '#EA4335', fg: '#fff', text: 'M' },
-  keep: { bg: '#FBBC04', fg: '#fff', text: 'K' },
-  drive: { bg: '#188038', fg: '#fff', text: 'D' },
-  amazonPhotos: { bg: '#232F3E', fg: '#FF9900', text: 'a' },
-  googlePhotos: { bg: '#1A73E8', fg: '#fff', text: 'P' },
-  facebook: { bg: '#1877F2', fg: '#fff', text: 'f', size: 15 },
-  yahoo: { bg: '#6001D2', fg: '#fff', text: 'Y' },
-  linkedin: { bg: '#0A66C2', fg: '#fff', text: 'in', size: 10 },
-  reddit: { bg: '#FF4500', fg: '#fff', text: 'r' },
-  x: { bg: '#111111', fg: '#fff', text: 'X', size: 12 },
-  youtube: { bg: '#FF0033', fg: '#fff', text: '▶', size: 10 },
-  amazon: { bg: '#232F3E', fg: '#FF9900', text: 'a' },
-  espn: { bg: '#CC0000', fg: '#fff', text: 'E' },
-  prime: { bg: '#00A8E1', fg: '#fff', text: '▶', size: 10 },
+  icloud: { bg: '#007AFF', fg: '#fff', text: '☁', size: 11 },
+  drive: { bg: '#0078D4', fg: '#fff', text: '1' },
   netflix: { bg: '#E50914', fg: '#fff', text: 'N' },
-  hulu: { bg: '#1CE783', fg: '#0B1C12', text: 'h' },
-  crunchyroll: { bg: '#F47521', fg: '#fff', text: 'C' },
-  tiktok: { bg: '#111111', fg: '#fff', text: '♪', size: 13 },
-  disney: { bg: '#0E1B4D', fg: '#fff', text: 'D' },
+  kisskh: { bg: '#7C3AED', fg: '#fff', text: 'K' },
+  prime: { bg: '#00A8E1', fg: '#fff', text: '▶', size: 10 },
+  hotstar: { bg: '#0F1014', fg: '#1F80E0', text: '★', size: 11 },
+  sunnxt: { bg: '#E11D48', fg: '#fff', text: 'S' },
+  appletv: { bg: '#111111', fg: '#fff', text: 'tv', size: 9 },
+  youtube: { bg: '#FF0033', fg: '#fff', text: '▶', size: 10 },
   spotify: { bg: '#1DB954', fg: '#fff', text: '♫', size: 12 },
-  analytics: { bg: '#F9AB00', fg: '#fff', text: 'G' },
+  applemusic: { bg: '#FA243C', fg: '#fff', text: '♫', size: 11 },
+  chatgpt: { bg: '#10A37F', fg: '#fff', text: 'G', size: 11 },
+  qwen: { bg: '#6366F1', fg: '#fff', text: 'Q' },
+  claude: { bg: '#D97757', fg: '#fff', text: 'C' },
+  github: { bg: '#24292F', fg: '#fff', text: 'GH', size: 8 },
   notion: { bg: '#111111', fg: '#fff', text: 'N' },
-  figma: { bg: '#1E1E1E', fg: '#fff', text: 'F' },
+  naukri: { bg: '#4A90D9', fg: '#fff', text: 'n', size: 11 },
+  telegram: { bg: '#26A5E4', fg: '#fff', text: '✈', size: 11 },
+  linkedin: { bg: '#0A66C2', fg: '#fff', text: 'in', size: 10 },
+  instagram: { bg: '#E4405F', fg: '#fff', text: '◎', size: 10 },
+  whatsapp: { bg: '#25D366', fg: '#fff', text: 'W' },
+  reddit: { bg: '#FF4500', fg: '#fff', text: 'r' },
+  amazon: { bg: '#232F3E', fg: '#FF9900', text: 'a' },
+  flipkart: { bg: '#2874F0', fg: '#FFE500', text: 'f' },
+  piratebay: { bg: '#601C1C', fg: '#fff', text: '⚓', size: 11 },
 }
 
 function Tile({ bg, children }: { bg: string; children?: ReactNode }) {
@@ -127,12 +130,24 @@ export function Flag() {
 
 export function Logo() {
   return (
-    <svg className="logo" viewBox="0 0 36 36" aria-hidden="true">
-      <rect width="36" height="36" rx="10" fill="#101828" />
-      <rect x="5" y="5" width="12" height="12" rx="3.2" fill="#FF9933" />
-      <rect x="19" y="5" width="12" height="12" rx="3.2" fill="#F8FAFC" />
-      <rect x="5" y="19" width="12" height="12" rx="3.2" fill="#138808" />
-      <rect x="19" y="19" width="12" height="12" rx="3.2" fill="#2563EB" />
+    <svg className="logo" viewBox="0 0 32 28" aria-hidden="true">
+      <path
+        className="logo-beam"
+        d="M0 14h8.5"
+        fill="none"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+      <circle className="logo-beam-dot" cx="0" cy="14" r="1.35" />
+      <path className="logo-glass" d="M8.5 4.5 8.5 23.5 19.5 14Z" />
+      <path className="logo-facet" d="M8.5 4.5 19.5 14 8.5 23.5" fill="none" strokeWidth="0.6" />
+      <path className="logo-shine" d="M8.5 4.5 13.2 14 8.5 23.5Z" />
+      <path className="logo-ray logo-ray-1" d="M19.5 14 28 7" fill="none" strokeWidth="1.75" strokeLinecap="round" />
+      <path className="logo-ray logo-ray-2" d="M19.5 14 28.2 11" fill="none" strokeWidth="1.75" strokeLinecap="round" />
+      <path className="logo-ray logo-ray-3" d="M19.5 14 29 14" fill="none" strokeWidth="1.75" strokeLinecap="round" />
+      <path className="logo-ray logo-ray-4" d="M19.5 14 28.2 17" fill="none" strokeWidth="1.75" strokeLinecap="round" />
+      <path className="logo-ray logo-ray-5" d="M19.5 14 28 21" fill="none" strokeWidth="1.75" strokeLinecap="round" />
+      <path className="logo-ray logo-ray-6" d="M19.5 14 27.2 23.5" fill="none" strokeWidth="1.75" strokeLinecap="round" />
     </svg>
   )
 }

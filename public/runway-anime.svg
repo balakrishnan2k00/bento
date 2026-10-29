@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" role="img" aria-label="Anime sunset landscape">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="45%" stop-color="#7c3aed"/>
+      <stop offset="72%" stop-color="#fb7185"/>
+      <stop offset="100%" stop-color="#fdba74"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="320" fill="url(#sky)"/>
+  <circle cx="620" cy="95" r="52" fill="url(#sun)" filter="url(#glow)" opacity="0.95"/>
+  <ellipse cx="620" cy="95" rx="120" ry="28" fill="#fde68a" opacity="0.25"/>
+  <!-- distant mountains -->
+  <path fill="#312e81" opacity="0.85" d="M0 220 L120 140 L220 200 L340 120 L480 210 L620 150 L800 230 L800 320 L0 320 Z"/>
+  <path fill="#4338ca" opacity="0.7" d="M0 250 L90 190 L200 240 L310 170 L450 250 L580 200 L800 260 L800 320 L0 320 Z"/>
+  <!-- city silhouette -->
+  <path fill="#0f172a" opacity="0.55" d="M0 265 h40 v55 H0zm55 20 h28 v35 H55zm38 -15 h22 v50 H93zm45 10 h35 v40 h-35zm50 -25 h18 v65 h-18zm42 5 h30 v60 h-30zm55 -18 h24 v78 h-24zm48 12 h32 v66 h-32zm60 -8 h20 v74 h-20zm52 15 h26 v59 h-26zm58 -22 h22 v81 h-22zm50 8 h34 v73 h-34zm62 -12 h28 v85 h-28zm55 18 h22 v55 h-22zm48 -5 h30 v60 h-30zm52 10 h24 v50 h-24zm58 -15 h36 v65 h-36zm50 5 h20 v60 h-20z"/>
+  <!-- grass -->
+  <rect y="285" width="800" height="35" fill="#14532d"/>
+  <path fill="#166534" d="M0 285 Q200 275 400 285 T800 285 L800 320 L0 320 Z"/>
+  <!-- anime character silhouette (small, back view) -->
+  <g transform="translate(355 248)" fill="#0f172a">
+    <ellipse cx="0" cy="-8" rx="14" ry="16"/>
+    <path d="M-18 8 Q0 -6 18 8 L14 42 Q0 36 -14 42 Z"/>
+    <path d="M-22 18 L-38 52 M22 18 L38 48" stroke="#0f172a" stroke-width="6" stroke-linecap="round" fill="none"/>
+  </g>
+  <!-- lens flare dots -->
+  <circle cx="520" cy="110" r="3" fill="#fff" opacity="0.5"/>
+  <circle cx="680" cy="130" r="2" fill="#fff" opacity="0.35"/>
+</svg>
