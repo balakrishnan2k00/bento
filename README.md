@@ -37,6 +37,23 @@ Most personal details live in `src/data.ts`:
 
 India flag, logo, and search engines are in `src/icons.tsx` and `src/dashboard.tsx`. Favicon is `public/favicon.svg`.
 
+### Movie posters (stored in the repo)
+
+Posters load from **`public/assets/images/`** first (Method 3 — direct repo storage). On GitHub Pages they are served as:
+
+`${import.meta.env.BASE_URL}assets/images/your-file.jpg`
+
+With the default Vite `base: './'`, that resolves correctly on https://balakrishnan2k00.github.io/bento/.
+
+1. Add JPG/WebP/PNG files under `public/assets/images/`.
+2. Name by **slug** from the title (e.g. `Avengers: Doomsday — India` → `avengers-doomsday-india.jpg`), or set an optional **third column** in `movielist.txt`:
+
+   `Release date<TAB>Title<TAB>poster-filename.jpg`
+
+3. Commit the images, `npm run deploy`. No TMDB key required for titles that have a local file.
+
+If no local file exists, the app still tries IMDb then TMDB. See `public/assets/images/README.md`.
+
 After local edits, refresh http://localhost:5173.
 
 ## Save to GitHub and publish
@@ -97,3 +114,4 @@ npm run deploy
 | `npm run preview` | Preview the production build |
 | `npm run lint` | Lint |
 | `npm run deploy` | Build and publish to GitHub Pages |
+| `node scripts/download-posters.mjs` | Fetch posters into `public/assets/images/` |

@@ -1,8 +1,16 @@
+import type { MovieEntry } from './movies'
+import { resolveLocalPoster } from './localPosters'
+
 const posterCache = new Map<string, string | null>()
+const inFlight = new Map<string, Promise<string | null>>()
 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY as string | undefined
 
-function cacheKey(title: string, year: number): string {
-  return `${year}::${title}`
+let queueTail: Promise<void> = Promise.resolve()
+const queueGapMs = 120
+
+function cacheKey(movie: Pick<MovieEntry, 'title' | 'releaseDate'>): string {
+  const year = movie.releaseDate.getFullYear()
+  return `${year}::${movie.title}`
 }
 
 function normalizeTitle(value: string): string {
@@ -18,6 +26,10 @@ function titleVariants(title: string): string[] {
   if (colon && !variants.includes(colon)) variants.push(colon)
   const dash = title.split('—')[0]?.trim()
   if (dash && !variants.includes(dash)) variants.push(dash)
+  const hyphen = title.split(' - ')[0]?.trim()
+  if (hyphen && !variants.includes(hyphen)) variants.push(hyphen)
+  const words = title.trim().split(/\s+/).slice(0, 4).join(' ')
+  if (words && !variants.includes(words)) variants.push(words)
   return variants
 }
 
@@ -37,6 +49,18 @@ function scoreTitle(query: string, candidate: string, year: number, candidateYea
 
   if (candidateYear && Math.abs(candidateYear - year) <= 1) score += 35
   return score
+}
+
+function enqueuePosterTask<T>(task: () => Promise<T>): Promise<T> {
+  const run = queueTail.then(async () => {
+    await new Promise((resolve) => setTimeout(resolve, queueGapMs))
+    return task()
+  })
+  queueTail = run.then(
+    () => undefined,
+    () => undefined,
+  )
+  return run
 }
 
 async function fetchTmdbPoster(
@@ -100,26 +124,83 @@ async function fetchImdbPoster(
     }
   }
 
-  return best && best.score >= 58 ? best.url : null
+  return best && best.score >= 50 ? best.url : null
 }
 
-export async function fetchMoviePoster(
+async function resolveRemotePoster(
   title: string,
   year: number,
   signal: AbortSignal,
 ): Promise<string | null> {
-  const key = cacheKey(title, year)
-  if (posterCache.has(key)) return posterCache.get(key) ?? null
-
-  let url = await fetchTmdbPoster(title, year, signal)
-  if (!url) url = await fetchImdbPoster(title, year, signal)
-
-  posterCache.set(key, url)
-  return url
+  const imdb = await fetchImdbPoster(title, year, signal)
+  if (imdb) return imdb
+  return fetchTmdbPoster(title, year, signal)
 }
 
-export function cachedMoviePoster(title: string, year: number): string | null | undefined {
-  const key = cacheKey(title, year)
+export async function fetchRemoteMoviePoster(
+  movie: Pick<MovieEntry, 'title' | 'releaseDate'>,
+  signal: AbortSignal,
+): Promise<string | null> {
+  const year = movie.releaseDate.getFullYear()
+  const key = `remote::${cacheKey(movie)}`
+  if (posterCache.has(key)) return posterCache.get(key) ?? null
+
+  const pending = inFlight.get(key)
+  if (pending) return pending
+
+  const job = enqueuePosterTask(() => resolveRemotePoster(movie.title, year, signal))
+    .then((url) => {
+      if (!signal.aborted) posterCache.set(key, url)
+      inFlight.delete(key)
+      return url
+    })
+    .catch((error) => {
+      inFlight.delete(key)
+      if (signal.aborted) throw error
+      throw error
+    })
+
+  inFlight.set(key, job)
+  return job
+}
+
+export async function fetchMoviePoster(
+  movie: Pick<MovieEntry, 'title' | 'releaseDate' | 'posterFile'>,
+  signal: AbortSignal,
+): Promise<string | null> {
+  const key = cacheKey(movie)
+  if (posterCache.has(key)) return posterCache.get(key) ?? null
+
+  const pending = inFlight.get(key)
+  if (pending) return pending
+
+  const job = enqueuePosterTask(async () => {
+    const local = await resolveLocalPoster(movie, signal)
+    if (local) return local
+    return resolveRemotePoster(movie.title, movie.releaseDate.getFullYear(), signal)
+  })
+    .then((url) => {
+      if (!signal.aborted) posterCache.set(key, url)
+      inFlight.delete(key)
+      return url
+    })
+    .catch((error) => {
+      inFlight.delete(key)
+      throw error
+    })
+
+  inFlight.set(key, job)
+  return job
+}
+
+export function cachedMoviePoster(
+  movie: Pick<MovieEntry, 'title' | 'releaseDate' | 'posterFile'>,
+): string | null | undefined {
+  const key = cacheKey(movie)
   if (!posterCache.has(key)) return undefined
   return posterCache.get(key) ?? null
+}
+
+export function imdbFindUrl(title: string): string {
+  return `https://www.imdb.com/find/?q=${encodeURIComponent(title)}`
 }

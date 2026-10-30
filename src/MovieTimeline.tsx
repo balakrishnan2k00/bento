@@ -3,7 +3,8 @@ import { useNow } from './hooks'
 import { noticeStats } from './notice'
 import { getDailyCopy } from './noticeContent'
 import { NoticeToday } from './NoticeToday'
-import { cachedMoviePoster, fetchMoviePoster } from './moviePosters'
+import { primaryLocalPoster } from './localPosters'
+import { fetchRemoteMoviePoster, imdbFindUrl } from './moviePosters'
 import { movieKey, movieTimeline, upcomingMovies, type MovieEntry } from './movies'
 
 function placeholderHue(title: string): number {
@@ -12,42 +13,43 @@ function placeholderHue(title: string): number {
   return hash
 }
 
-function googleSearchUrl(title: string): string {
-  return `https://www.google.com/search?q=${encodeURIComponent(title)}`
-}
-
 function MoviePoster({ movie }: { movie: MovieEntry }) {
-  const year = movie.releaseDate.getFullYear()
-  const cached = cachedMoviePoster(movie.title, year)
-  const [poster, setPoster] = useState<string | null>(cached ?? null)
+  const localSrc = useMemo(() => primaryLocalPoster(movie), [movie.title, movie.posterFile])
+  const [src, setSrc] = useState(localSrc)
   const [failed, setFailed] = useState(false)
-  const [loading, setLoading] = useState(cached === undefined)
+  const [loadingRemote, setLoadingRemote] = useState(false)
 
   useEffect(() => {
-    if (cached !== undefined) {
-      setPoster(cached)
-      setLoading(false)
+    setSrc(localSrc)
+    setFailed(false)
+    setLoadingRemote(false)
+  }, [localSrc])
+
+  function onImageError() {
+    if (src === localSrc && !loadingRemote) {
+      setLoadingRemote(true)
+      const controller = new AbortController()
+      fetchRemoteMoviePoster(movie, controller.signal)
+        .then((url) => {
+          if (url) setSrc(url)
+          else setFailed(true)
+        })
+        .catch(() => setFailed(true))
+        .finally(() => setLoadingRemote(false))
       return
     }
+    setFailed(true)
+  }
 
-    const controller = new AbortController()
-    setLoading(true)
-    fetchMoviePoster(movie.title, year, controller.signal)
-      .then((url) => setPoster(url))
-      .catch(() => undefined)
-      .finally(() => setLoading(false))
-
-    return () => controller.abort()
-  }, [movie.title, year, cached])
-
-  if (poster && !failed) {
+  if (!failed && src) {
     return (
       <img
         className="movie-poster"
-        src={poster}
+        src={src}
         alt=""
         loading="lazy"
-        onError={() => setFailed(true)}
+        referrerPolicy="no-referrer"
+        onError={onImageError}
       />
     )
   }
@@ -55,15 +57,15 @@ function MoviePoster({ movie }: { movie: MovieEntry }) {
   const hue = placeholderHue(movie.title)
   return (
     <div
-      className={`movie-poster movie-poster-fallback${loading ? ' movie-poster-loading' : ''}`}
+      className={`movie-poster movie-poster-fallback${loadingRemote ? ' movie-poster-loading' : ''}`}
       style={{
-        background: loading
+        background: loadingRemote
           ? undefined
           : `linear-gradient(145deg, hsl(${hue} 42% 42%), hsl(${(hue + 40) % 360} 38% 28%))`,
       }}
       aria-hidden="true"
     >
-      {!loading ? <span aria-hidden="true">{movie.title.slice(0, 1)}</span> : null}
+      {!loadingRemote ? <span aria-hidden="true">{movie.title.slice(0, 1)}</span> : null}
     </div>
   )
 }
@@ -87,10 +89,10 @@ function TimelineItem({
   const poster = (
     <a
       className="movie-poster-link"
-      href={googleSearchUrl(movie.title)}
+      href={imdbFindUrl(movie.title)}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Search Google for ${movie.title}`}
+      aria-label={`Find ${movie.title} on IMDb`}
     >
       <MoviePoster movie={movie} />
     </a>

@@ -4,6 +4,8 @@ export type MovieEntry = {
   language: string
   releaseDate: Date
   title: string
+  /** Optional filename under public/assets/images/ (e.g. mookuthi-amman-2.jpg) */
+  posterFile?: string
 }
 
 function parseReleaseDate(value: string): Date {
@@ -28,13 +30,18 @@ export function parseMovieList(source: string): MovieEntry[] {
     }
 
     const dateStr = trimmed.slice(0, tab).trim()
-    const title = trimmed.slice(tab + 1).trim()
+    const rest = trimmed.slice(tab + 1)
+    const titleTab = rest.indexOf('\t')
+    const title = (titleTab === -1 ? rest : rest.slice(0, titleTab)).trim()
+    const posterFile =
+      titleTab === -1 ? undefined : rest.slice(titleTab + 1).trim() || undefined
     if (!title) continue
 
     entries.push({
       language,
       title,
       releaseDate: parseReleaseDate(dateStr),
+      posterFile,
     })
   }
 
