@@ -8,8 +8,8 @@ import {
   SearchBar,
   TopBar,
 } from './dashboard'
-import { useNow, useQuote, useSearchHotkey, useThemeControl, useWeather } from './hooks'
 import { Logo } from './icons'
+import { useNow, useQuote, useSearchHotkey, useThemeControl, useWeather } from './hooks'
 import { NoticeRail } from './NoticeRail'
 import { MovieTimeline } from './MovieTimeline'
 
@@ -60,10 +60,6 @@ export default function App() {
       <div className="page">
         <NoticeRail />
         <div className="page-center">
-          <header className="brand">
-            <Logo />
-            <span className="wordmark">Prism</span>
-          </header>
           <main className="shell">
             <TopBar
             now={now}
@@ -72,13 +68,19 @@ export default function App() {
             themePreference={themePreference}
             onThemePreference={setThemePreference}
           />
-            <SearchBar
-              query={query}
-              engine={engine}
-              onQuery={setQuery}
-              onEngine={setEngine}
-              onSubmit={onSearch}
-            />
+            <div className="shell-top">
+              <div className="brand brand--inline" aria-label="Prism">
+                <Logo />
+                <span className="wordmark">Prism</span>
+              </div>
+              <SearchBar
+                query={query}
+                engine={engine}
+                onQuery={setQuery}
+                onEngine={setEngine}
+                onSubmit={onSearch}
+              />
+            </div>
             <QuoteCard text={quote.text} author={quote.author} />
             <section className="bento" aria-label="Dashboard">
               <LinkCard className="personal" title="Personal" items={personal} />
