@@ -72,7 +72,7 @@ export function NoticeRunwayHero({
             ✈
           </span>
         </div>
-        <span className="runway-strip-label">28 Jan</span>
+        <span className="runway-strip-label">30 Jan</span>
       </div>
 
       <div className="runway-gauge-foot">

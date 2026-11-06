@@ -1,9 +1,10 @@
 export const noticePeriod = {
-  durationDays: 90,
+  /** Inclusive calendar span from startDate through lastWorkingDay. */
+  durationDays: 93,
   /** Notice start (local calendar date). */
   startDate: '2026-10-30',
-  /** Last working day — 28 Jan 2027. */
-  lastWorkingDay: '2027-01-28',
+  /** Last working day — 30 Jan 2027. */
+  lastWorkingDay: '2027-01-30',
 }
 
 export function parseNoticeDate(iso: string): Date {

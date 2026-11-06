@@ -22,7 +22,7 @@ export function NoticeBalancePanel({ totalDaysLeft, timeline }: NoticeBalancePan
         />
         <p className="notice-balance-banner-copy">
           <span className="notice-balance-scenic-kicker">Runway ahead</span>
-          <span className="notice-balance-scenic-date">Wheels up · 28 Jan 2027</span>
+          <span className="notice-balance-scenic-date">Wheels up · 30 Jan 2027</span>
         </p>
       </div>
 

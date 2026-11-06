@@ -24,7 +24,7 @@ export function NoticeRail() {
         <div>
           <h2 className="notice-dash-title">Exit runway</h2>
           <p className="notice-dash-sub">
-            Day {stats.elapsedDays} of {stats.totalDays} · LWD 28 Jan 2027
+            Day {stats.elapsedDays} of {stats.totalDays} · LWD 30 Jan 2027
           </p>
         </div>
         <span className={`notice-phase notice-phase--${phase}`}>{phaseLabel(phase)}</span>

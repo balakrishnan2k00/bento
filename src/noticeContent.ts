@@ -43,7 +43,7 @@ function pickMany<T>(items: readonly T[], date: Date, count: number, salt: numbe
 }
 
 const thoughts = [
-  'Freedom on 28 Jan is built in small, honest hours — not heroic all-nighters.',
+  'Freedom on 30 Jan is built in small, honest hours — not heroic all-nighters.',
   'You are serving notice, not serving anxiety. Breathe between tickets.',
   'The best revenge against burnout is a calm, competent exit.',
   'Your identity outlives this badge. Invest in who you become next.',
@@ -62,7 +62,7 @@ const thoughts = [
   'Skills compound in quiet blocks. Protect one today.',
   'You already made the hard decision. Now execute with grace.',
   'Worry rehearses failure; preparation prevents it.',
-  '28 Jan is a date on a calendar. The life after is the point.',
+  '30 Jan is a date on a calendar. The life after is the point.',
   'Compare yourself to who you were last week, not to coworkers.',
   'A ten-minute walk is a vote for future-you.',
   'Document today what future-you will forget in a month.',
