@@ -39,7 +39,7 @@ India flag, logo, and search engines are in `src/icons.tsx` and `src/dashboard.t
 
 ### Movie posters (stored in the repo)
 
-Posters load from **`public/assets/images/`** first (Method 3 — direct repo storage). On GitHub Pages they are served as:
+Posters load from `public/assets/images/` first (Method 3 — direct repo storage). On GitHub Pages they are served as:
 
 `${import.meta.env.BASE_URL}assets/images/your-file.jpg`
 
@@ -49,7 +49,6 @@ With the default Vite `base: './'`, that resolves correctly on https://balakrish
 2. Name by **slug** from the title (e.g. `Avengers: Doomsday — India` → `avengers-doomsday-india.jpg`), or set an optional **third column** in `movielist.txt`:
 
    `Release date<TAB>Title<TAB>poster-filename.jpg`
-
 3. Commit the images, `npm run deploy`. No TMDB key required for titles that have a local file.
 
 If no local file exists, the app still tries IMDb then TMDB. See `public/assets/images/README.md`.
@@ -87,7 +86,7 @@ npm run deploy
 
 That builds the React app and pushes `dist` to `gh-pages`. After a minute, open https://balakrishnan2k00.github.io/bento/.
 
-If Pages is not on yet: GitHub repo → **Settings → Pages → Source** → branch **`gh-pages`** / folder **`/`** → Save.
+If Pages is not on yet: GitHub repo → **Settings → Pages → Source** → branch `gh-pages` / folder `/` → Save.
 
 ### Full sequence after an edit
 
@@ -96,7 +95,7 @@ cd e:\Projects\dashboard
 npm run dev
 ```
 
-Check the page in the browser, then:
+Check the page in the browser, then 
 
 ```bash
 git add -A
