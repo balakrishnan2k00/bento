@@ -49,7 +49,7 @@ With the default Vite `base: './'`, that resolves correctly on https://balakrish
 2. Name by **slug** from the title (e.g. `Avengers: Doomsday — India` → `avengers-doomsday-india.jpg`), or set an optional **third column** in `movielist.txt`:
 
    `Release date<TAB>Title<TAB>poster-filename.jpg`
-3. Commit the images, `npm run deploy`. No TMDB key required for titles that have a local file.
+3. Commit the images and push to `main` (or run `npm run deploy`). No TMDB key required for titles that have a local file.
 
 If no local file exists, the app still tries IMDb then TMDB. See `public/assets/images/README.md`.
 
@@ -57,7 +57,7 @@ After local edits, refresh http://localhost:5173.
 
 ## Save to GitHub and publish
 
-The source lives on the `main` branch. The live site is the `gh-pages` branch.
+The source lives on the `main` branch. GitHub Actions builds the site and publishes it to Pages on every push to `main` (workflow: **Deploy to GitHub Pages**).
 
 ### 1. Log in (once)
 
@@ -65,7 +65,7 @@ The source lives on the `main` branch. The live site is the `gh-pages` branch.
 gh auth login --hostname github.com --git-protocol https --web
 ```
 
-Complete the browser prompt. You only need the extra `workflow` permission if you add GitHub Actions later. This project publishes with `gh-pages`, so `repo` access is enough.
+Complete the browser prompt. Include the `workflow` scope so Actions workflows can be updated.
 
 ### 2. Commit your changes
 
@@ -76,17 +76,17 @@ git commit -m "Describe why you changed the start page."
 git push origin main
 ```
 
-Do not commit `.env` files or secrets. `node_modules` and `dist` are already ignored.
+Do not commit `.env` files or secrets. `node_modules` and `dist` are already ignored. Pushing to `main` starts the Pages deploy automatically.
 
-### 3. Deploy the live site
+### 3. Redeploy without code changes
 
 ```bash
 npm run deploy
 ```
 
-That builds the React app and pushes `dist` to `gh-pages`. After a minute, open https://balakrishnan2k00.github.io/bento/.
+That triggers the same workflow from the Actions tab. After a minute, open https://balakrishnan2k00.github.io/bento/.
 
-If Pages is not on yet: GitHub repo → **Settings → Pages → Source** → branch `gh-pages` / folder `/` → Save.
+If Pages is not on yet: GitHub repo → **Settings → Pages → Build and deployment → Source** → **GitHub Actions**.
 
 ### Full sequence after an edit
 
@@ -95,13 +95,12 @@ cd e:\Projects\dashboard
 npm run dev
 ```
 
-Check the page in the browser, then 
+Check the page in the browser, then
 
 ```bash
 git add -A
 git commit -m "Your message"
 git push origin main
-npm run deploy
 ```
 
 ## Other scripts
@@ -112,5 +111,5 @@ npm run deploy
 | `npm run build` | Production build into `dist/` |
 | `npm run preview` | Preview the production build |
 | `npm run lint` | Lint |
-| `npm run deploy` | Build and publish to GitHub Pages |
+| `npm run deploy` | Manually trigger the Pages GitHub Actions workflow |
 | `node scripts/download-posters.mjs` | Fetch posters into `public/assets/images/` |
